@@ -17,7 +17,17 @@ final class StartService {
     
     func configureWindow() {
         if let win = window {
-            let navigationController = UINavigationController(rootViewController: ViewController())
+            let navigationController = UINavigationController(rootViewController: MainViewController())
+            
+            navigationController.navigationBar.isTranslucent = false
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .white
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            
+            navigationController.navigationBar.standardAppearance = appearance
+            navigationController.navigationBar.scrollEdgeAppearance = appearance
+            
             win.rootViewController = navigationController
             win.makeKeyAndVisible()
         }
