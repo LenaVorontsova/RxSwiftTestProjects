@@ -47,7 +47,9 @@ class MainViewController: UIViewController {
         let vc = PhotosViewController()
         
         vc.selectedPhoto.subscribe(onNext: { [weak self] photo in
-            self?.mainView.setImage(photo)
+            DispatchQueue.main.async {
+                self?.mainView.setImage(photo)
+            }
         }, onError: { error in
             print("Error selecting photo: \(error)")
         }).disposed(by: disposeBag)
@@ -58,6 +60,12 @@ class MainViewController: UIViewController {
 
 extension MainViewController: MainDelegate {
     func applyFilter() {
+        guard let sourceImage = self.mainView.image else { return }
         
+        FiltersService().applyFilter(to: sourceImage) { filteredImage in
+            DispatchQueue.main.async {
+                self.mainView.setImage(filteredImage)
+            }
+        }
     }
 }

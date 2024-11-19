@@ -26,12 +26,17 @@ final class MainView: UIView {
         view.layer.cornerRadius = 5
         view.backgroundColor = .systemBlue
         view.setTitleColor(.white, for: .normal)
+        view.isHidden = true
         
         view.addTarget(self, action: #selector(applyFilter), for: .touchUpInside)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    var image: UIImage? {
+        return filterImage.image
+    }
     
     weak var delegate: MainDelegate?
     
@@ -58,7 +63,7 @@ final class MainView: UIView {
             filterImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
             filterImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             filterImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            filterImage.heightAnchor.constraint(equalToConstant: 120),
+            filterImage.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
             
             filterButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor,
                                                  constant: -20),
@@ -76,6 +81,6 @@ final class MainView: UIView {
     
     func setImage(_ image: UIImage) {
         filterImage.image = image
-        self.layoutIfNeeded()
+        filterButton.isHidden = false
     }
 }
