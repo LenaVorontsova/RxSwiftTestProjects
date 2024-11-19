@@ -14,6 +14,7 @@ protocol MainDelegate: AnyObject {
 final class MainView: UIView {
     private lazy var filterImage: UIImageView = {
         let view = UIImageView()
+        view.contentMode = .scaleAspectFill
         
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -24,7 +25,7 @@ final class MainView: UIView {
         view.setTitleColor(.black, for: .normal)
         view.layer.cornerRadius = 5
         view.backgroundColor = .systemBlue
-        view.setTitleColor(.black, for: .normal)
+        view.setTitleColor(.white, for: .normal)
         
         view.addTarget(self, action: #selector(applyFilter), for: .touchUpInside)
         
@@ -54,15 +55,13 @@ final class MainView: UIView {
     
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            filterImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor,
-                                             constant: 20),
-            filterImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor,
-                                                 constant: 20),
-            filterImage.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor,
-                                                  constant: -20),
-            filterImage.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.75),
+            filterImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
+            filterImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            filterImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            filterImage.heightAnchor.constraint(equalToConstant: 120),
             
-            filterButton.topAnchor.constraint(equalTo: filterImage.bottomAnchor, constant: 20),
+            filterButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor,
+                                                 constant: -20),
             filterButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor,
                                                   constant: 80),
             filterButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor,
@@ -73,5 +72,10 @@ final class MainView: UIView {
     
     @objc private func applyFilter() {
         delegate?.applyFilter()
+    }
+    
+    func setImage(_ image: UIImage) {
+        filterImage.image = image
+        self.layoutIfNeeded()
     }
 }
