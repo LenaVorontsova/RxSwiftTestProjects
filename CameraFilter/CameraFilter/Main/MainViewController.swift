@@ -62,10 +62,11 @@ extension MainViewController: MainDelegate {
     func applyFilter() {
         guard let sourceImage = self.mainView.image else { return }
         
-        FiltersService().applyFilter(to: sourceImage) { filteredImage in
-            DispatchQueue.main.async {
-                self.mainView.setImage(filteredImage)
-            }
-        }
+        FiltersService().applyFilter(to: sourceImage)
+            .subscribe(onNext: { filteredImage in
+                DispatchQueue.main.async {
+                    self.mainView.setImage(filteredImage)
+                }
+            }).disposed(by: disposeBag)
     }
 }
