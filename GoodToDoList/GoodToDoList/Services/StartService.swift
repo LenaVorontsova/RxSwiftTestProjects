@@ -17,7 +17,7 @@ final class StartService {
     
     func configureWindow() {
         if let win = window {
-            let navigationController = UINavigationController(rootViewController: ViewController())
+            let navigationController = UINavigationController(rootViewController: TaskListViewController())
             
             navigationController.navigationBar.isTranslucent = false
             let appearance = UINavigationBarAppearance()
