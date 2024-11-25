@@ -13,6 +13,8 @@ final class NewsView: UIView {
     public lazy var newsTableView: UITableView = {
         let view = UITableView()
         view.isScrollEnabled = true
+        view.backgroundColor = .white
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
