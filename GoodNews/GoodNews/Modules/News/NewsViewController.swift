@@ -70,7 +70,7 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
         
         let article = articles[indexPath.row]
         cell.configure(title: article.title,
-                       description: article.description)
+                       description: article.description ?? "")
         return cell
     }
     
