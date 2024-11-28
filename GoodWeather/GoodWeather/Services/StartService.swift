@@ -17,7 +17,7 @@ final class StartService {
     
     func configureWindow() {
         if let win = window {
-            let navigationController = UINavigationController(rootViewController: UIViewController())
+            let navigationController = UINavigationController(rootViewController: WeatherViewController())
             navigationController.navigationBar.isTranslucent = false
             navigationController.navigationBar.prefersLargeTitles = true
             
