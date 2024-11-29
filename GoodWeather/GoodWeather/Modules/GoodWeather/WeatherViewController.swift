@@ -64,14 +64,17 @@ final class WeatherViewController: UIViewController {
         
         let resource = Resource<WeatherResult>(url: url)
         
-        URLRequest.load(resource: resource)
+        let search = URLRequest.load(resource: resource)
             .observe(on: MainScheduler.instance)
-            .catchErrorJustReturn(WeatherResult.empty)
-            .subscribe(onNext: { result in
-                print(result)
-                let weather = result.main
-                self.displayWeather(weather)
-            }).disposed(by: disposeBag)
+            .asDriver(onErrorJustReturn: WeatherResult.empty)
+        
+        search.map { "\($0.main.temp) ℉" }
+            .drive(self.mainView.temperatureLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        search.map { "\($0.main.humidity) 💧" }
+            .drive(self.mainView.humidityLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
 

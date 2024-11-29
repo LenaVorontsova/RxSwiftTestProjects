@@ -23,6 +23,7 @@ final class WeatherView: UIView {
         let view = UILabel()
         view.font = .systemFont(ofSize: 38)
         view.textColor = .black
+        view.text = "🙈"
         
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,6 +32,7 @@ final class WeatherView: UIView {
         let view = UILabel()
         view.font = .systemFont(ofSize: 26)
         view.textColor = .darkGray
+        view.text = "✕"
         
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
