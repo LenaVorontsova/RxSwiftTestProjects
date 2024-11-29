@@ -38,7 +38,7 @@ final class NewsViewController: UIViewController {
     }
     
     private func populateNews() {
-        URLRequest.load(resource: ArticlesList.all)
+        URLRequest.load(resource: ArticleResponse.all)
             .subscribe(onNext: { [weak self] result in
                 if let result = result {
                     self?.articles = result.articles
