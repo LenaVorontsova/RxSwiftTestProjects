@@ -10,7 +10,7 @@ import UIKit
 final class NewsTableViewCell: UITableViewCell {
     static let identifier = "newsTableViewCell"
     
-    private lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 16)
         view.textColor = .black
@@ -21,7 +21,7 @@ final class NewsTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var descrLabel: UILabel = {
+    lazy var descrLabel: UILabel = {
         let view = UILabel()
         view.font = .systemFont(ofSize: 14)
         view.textColor = .gray

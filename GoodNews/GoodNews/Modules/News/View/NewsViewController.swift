@@ -13,7 +13,7 @@ final class NewsViewController: UIViewController {
     private lazy var mainView = NewsView(delegate: self)
     
     private let disposeBag = DisposeBag()
-    private var articles = [Article]()
+    private var articleListVM: ArticleListViewModel!
     
     override func loadView() {
         super.loadView()
@@ -39,12 +39,12 @@ final class NewsViewController: UIViewController {
     
     private func populateNews() {
         URLRequest.load(resource: ArticleResponse.all)
-            .subscribe(onNext: { [weak self] result in
-                if let result = result {
-                    self?.articles = result.articles
-                    DispatchQueue.main.async {
-                        self?.mainView.newsTableView.reloadData()
-                    }
+            .subscribe(onNext: { articleResponse in
+                let articles = articleResponse.articles
+                self.articleListVM = ArticleListViewModel(articles)
+                
+                DispatchQueue.main.async {
+                    self.mainView.newsTableView.reloadData()
                 }
             })
             .disposed(by: disposeBag)
@@ -59,7 +59,7 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        articles.count
+        return articleListVM == nil ? 0 : articleListVM.articlesVM.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,9 +68,16 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
             for: indexPath
         ) as? NewsTableViewCell else { fatalError("NewsTableViewCell not found") }
         
-        let article = articles[indexPath.row]
-        cell.configure(title: article.title,
-                       description: article.description ?? "")
+        let article = articleListVM.articleAt(indexPath.row)
+        
+        article.title.asDriver(onErrorJustReturn: "")
+            .drive(cell.titleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        article.description.asDriver(onErrorJustReturn: "")
+            .drive(cell.descrLabel.rx.text)
+            .disposed(by: disposeBag)
+        
         return cell
     }
     
