@@ -34,7 +34,9 @@ final class WeatherViewController: UIViewController {
     private func setupUI() {
         self.view.backgroundColor = .white
         
-        self.mainView.cityNameTextField.rx.value
+        self.mainView.cityNameTextField.rx.controlEvent(.editingDidEndOnExit)
+            .asObservable()
+            .map { self.mainView.cityNameTextField.text }
             .subscribe(onNext: { city in
                 if let city = city {
                     if city.isEmpty {
